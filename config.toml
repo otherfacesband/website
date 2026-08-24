@@ -1,13 +1,13 @@
 baseURL = '/'
 languageCode = 'en-us'
-title = 'Kristian de Leon'
+title = 'other faces
 theme = 'holy'
 
 [markup.goldmark.renderer]
   unsafe = true
 
 [params]
-  copyright = "kdeleonmusic@gmail.com"
+  copyright = "otherfacesband@gmail.com"
 
 [menu]
   [[menu.main]]
