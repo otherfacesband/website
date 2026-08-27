@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+{{- partial "head.html" . -}}
+
+<body class="bg:url('\home.jpeg') bg:repeat-x bg:start bg:#090302@dark font:fade-16@dark font:sans">
+    {{ partial "header.html" . -}}
+    <div class="d:flex flex:column@<=sm pt:45 px:24 jc:center gap:44 word-break:break-word">
+        {{- block "side" . }}{{- end }}
+        <div class="max-w:700 w:full box:content-box">
+            {{- block "main" . }}{{- end }}
+            {{- partial "footer.html" . -}}
+        </div>
+    </div>
+</body>
+
+</html>

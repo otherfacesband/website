@@ -1,0 +1,5 @@
+{{ define "main" }}
+<div class="d:flex flex:col">
+    {{ with $.Site.GetPage "page" "home.md" }}{{.Content}}{{end}}
+</div>
+{{ end }}

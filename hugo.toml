@@ -3,11 +3,16 @@ languageCode = 'en-us'
 title = 'other faces'
 theme = 'holy'
 
+
+
 [markup.goldmark.renderer]
   unsafe = true
 
 [params]
   copyright = "otherfacesband@gmail.com"
+
+  [params.author]
+  name = "Kristian"
 
 [menu]
   [[menu.main]]

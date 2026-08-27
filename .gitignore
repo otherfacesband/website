@@ -19,3 +19,6 @@ bin-release/
 public/
 
 # Backup Files
+
+# MAC
+.DS_Store

@@ -1,0 +1,21 @@
+{{ define "main" }}
+<article class="box:border-box">
+    <header class="mb:2">
+        <div class="font:40 font:extrabold">{{ .Title }}</div>
+        {{ with resources.GetMatch .Params.banner }}
+        {{ $image := .Fit "1920x1080" }}
+        <img class="mt:16" src="{{ $image.RelPermalink }}" width="{{ $image.Width }}">
+        {{ end }}
+        <div class="mt:16 f:fade-60">
+            {{- if isset .Params "date" -}}
+            {{ if eq .Lastmod .Date }}
+            <time>{{ .Date | time.Format (":date_medium") }}</time>
+            {{ else }}
+            <time>{{ .Lastmod | time.Format (":date_medium") }}</time>
+            {{ end }}
+            {{- end -}}
+        </div>
+    </header>
+    {{- partial "prose.html" . -}}
+</article>
+{{ end }}
