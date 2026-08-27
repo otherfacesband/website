@@ -1,6 +1,6 @@
 baseURL = '/'
 languageCode = 'en-us'
-title = 'other faces
+title = 'other faces'
 theme = 'holy'
 
 [markup.goldmark.renderer]
