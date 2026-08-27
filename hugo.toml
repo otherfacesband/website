@@ -25,11 +25,6 @@ theme = 'holy'
     url = "/bio/"
     weight = 11
   [[menu.main]]
-    identifier = "works"
-    name = "Works"
-    url = "/works/"
-    weight = 12
-  [[menu.main]]
     identifier = "videos"
     name = "Videos"
     url = "/videos/"
