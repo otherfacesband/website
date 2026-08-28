@@ -2,9 +2,10 @@
 <html>
 {{- partial "head.html" . -}}
 
-<body class="bg:url('\treebonk.jpg') bg:repeat-y bg:cover bg:100% bg:#090302@dark font:fade-16@dark font:sans">
+{{ $isHome := or .IsHome (and .File (eq .File.BaseFileName "home")) }}
+<body class="{{ if $isHome }}bg:url('\white_tree.webp') bg:repeat-y bg:cover bg:center bg:scroll {{ end }}bg:#090302@dark font:fade-16@dark font:sans">
     {{ partial "header.html" . -}}
-    <div class="d:flex flex:column@<=sm pt:45 px:24 jc:center gap:44 word-break:break-word">
+    <div class="d:flex flex:column@<=sm min-h:100vh pt:45 px:24 jc:center gap:44 word-break:break-word">
         {{- block "side" . }}{{- end }}
         <!-- <div class="max-w:700 w:full box:content-box">
             {{- block "main" . }}{{- end }}
