@@ -1,4 +1,5 @@
 {{ define "main" }}
+<!-- site root ("/") renders home.md's content directly, instead of _index.md's own (empty) content -->
 <div class="d:flex flex:col">
     {{ with $.Site.GetPage "page" "home.md" }}{{.Content}}{{end}}
 </div>

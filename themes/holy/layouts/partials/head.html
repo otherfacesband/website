@@ -1,8 +1,10 @@
 <head>
+    <!-- required document meta -->
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
+    <!-- browser tab title -->
     <title>{{ if not .IsHome }}{{ .Title }} - {{ end }}{{ site.Title }}</title>
 
     <!-- Meta -->
@@ -14,6 +16,7 @@
     <meta name="author" content="{{ site.Params.author.name }}" />
     {{ end }}
 
+    <!-- Master CSS: reset stylesheet + the runtime that turns utility classNames into actual CSS in the browser -->
     <link href="https://unpkg.com/@master/normal.css" rel="stylesheet">
     <script src="https://unpkg.com/@master/style@1.5.0"></script>
     <script src="https://unpkg.com/@master/styles@1.13.0"></script>
@@ -31,11 +34,13 @@
         gtag('config', 'G-3FHPWC19NH');
     </script>
 
+    <!-- default site font -->
     <style>
 :root {
     --font-sans: "Inter var", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 }
     </style>
 
+    <!-- forces dark theme regardless of the visitor's OS preference -->
     {{- partial "head-extra.html" . -}}
 </head>

@@ -1,9 +1,12 @@
 {{ define "main" }}
+<!-- default template for section/taxonomy list pages (e.g. /categories/) -->
 <div>
     <article class="box:border-box pt:32 w:full">
+        <!-- section title -->
         <header class="mb:2">
             <div class="font:40 font:extrabold">{{ .Title }}</div>
         </header>
+        <!-- section body -->
         {{- partial "prose.html" . -}}
     </article>
 </div>

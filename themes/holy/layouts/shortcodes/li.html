@@ -1,1 +1,2 @@
+<!-- shortcode wrapper: exposes the li.html partial to Markdown content as the "li" shortcode (href/title/alt params) -->
 {{- partial "li.html" ( dict "url" (.Get "href") "title" (.Get "title") "subTitle" (.Get "alt") ) -}}

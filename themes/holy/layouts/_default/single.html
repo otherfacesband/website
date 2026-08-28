@@ -1,11 +1,15 @@
 {{ define "main" }}
+<!-- default template for a standalone content page (about, album, videos, home) -->
 <article class="box:border-box">
+    <!-- page title -->
     <header class="mb:2">
         <div class="font:40 font:extrabold">{{ .Title }}</div>
+        <!-- optional banner image, set via a "banner" param in the page's front matter -->
         {{ with resources.GetMatch .Params.banner }}
         {{ $image := .Fit "1920x1080" }}
         <img class="mt:16" src="{{ $image.RelPermalink }}" width="{{ $image.Width }}">
         {{ end }}
+        <!-- optional date, set via a "date" param in the page's front matter -->
         <div class="mt:16 f:fade-60">
             {{- if isset .Params "date" -}}
             {{ if eq .Lastmod .Date }}
@@ -16,6 +20,7 @@
             {{- end -}}
         </div>
     </header>
+    <!-- page body (the page's own Markdown content) -->
     {{- partial "prose.html" . -}}
 </article>
 {{ end }}

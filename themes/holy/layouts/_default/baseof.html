@@ -2,17 +2,18 @@
 <html>
 {{- partial "head.html" . -}}
 
+<!-- home page gets its own background image; every other page stays plain -->
 {{ $isHome := or .IsHome (and .File (eq .File.BaseFileName "home")) }}
 <body class="{{ if $isHome }}bg:url('\white_tree.webp') bg:repeat-y bg:cover bg:center bg:scroll {{ end }}bg:#090302@dark font:fade-16@dark font:sans">
+    <!-- fixed nav bar -->
     {{ partial "header.html" . -}}
+    <!-- full-height page wrapper: stretches the content card so the footer clamps to the true bottom of the page -->
     <div class="d:flex flex:column@<=sm min-h:100vh pt:45 px:24 jc:center gap:44 word-break:break-word">
         {{- block "side" . }}{{- end }}
-        <!-- <div class="max-w:700 w:full box:content-box">
-            {{- block "main" . }}{{- end }}
-            {{- partial "footer.html" . -}}
-        </div> -->
+        <!-- content card -->
         <div class="max-w:700 w:full box:content-box d:flex flex:column min-h:80vh p:16|24 r:8">
             {{- block "main" . }}{{- end }}
+            <!-- footer, pinned to the bottom of the card via mt:auto -->
             <div class="mt:auto">
                 {{- partial "footer.html" . -}}
             </div>

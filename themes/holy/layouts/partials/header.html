@@ -6,7 +6,7 @@
         mx:auto
         px:32
         d:flex
-        align-items:center
+        align-items:end
     ">
         <div class="ml:auto">
             {{ $currentPage := . }}
@@ -15,9 +15,11 @@
             {{ if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }}
             {{ $active = "active" }}
             {{ end }}
+            <!-- nav links -->
             <a class="
                 font:#637C9E
                 font:semibold
+                font:20
                 font:fade
                 font:fade-10:hover
                 font:fade-30.active
@@ -31,8 +33,9 @@
         </div>
     </div>
 
-    <div class="abs left:50% top:50% transform:translate(-50%,-50%)">
-        <a href="/" class="font:bold">
+    <!-- title  -->
+    <div class="abs left:50% bottom:0 transform:translate(-50%,0)">
+        <a href="/" class="font:bold font:24">
             {{ if not .Site.Params.HeaderTitle }}
             {{ .Site.Title }}
             {{ else }}
