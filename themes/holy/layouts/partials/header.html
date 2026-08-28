@@ -8,16 +8,6 @@
         d:flex
         align-items:center
     ">
-        <div>
-            <a href="/" class="mr-3 font:bold">
-                {{ if not .Site.Params.HeaderTitle }}
-                {{ .Site.Title }}
-                {{ else }}
-                {{ .Site.Params.HeaderTitle }}
-                {{ end }}
-            </a>
-        </div>
-
         <div class="ml:auto">
             {{ $currentPage := . }}
             {{ $active := "" }}
@@ -39,5 +29,15 @@
             </a>
             {{ end }}
         </div>
+    </div>
+
+    <div class="abs left:50% top:50% transform:translate(-50%,-50%)">
+        <a href="/" class="font:bold">
+            {{ if not .Site.Params.HeaderTitle }}
+            {{ .Site.Title }}
+            {{ else }}
+            {{ .Site.Params.HeaderTitle }}
+            {{ end }}
+        </a>
     </div>
 </nav>
