@@ -1,3 +1,10 @@
+<!-- mobile dropdown toggle: pure CSS checkbox hack, no JS needed -->
+<style>
+    .nav-toggle:checked ~ .nav-links {
+        display: flex !important;
+    }
+</style>
+
 <nav class="w:full h:45 fixed bg:#090302EE@dark bg:white z:1000">
     <div class="
         h:full
@@ -8,7 +15,12 @@
         d:flex
         align-items:end
     ">
-        <div class="ml:auto">
+        <!-- hamburger button: hidden on desktop, shown at/below the small breakpoint -->
+        <input type="checkbox" id="nav-toggle" class="nav-toggle d:none">
+        <label for="nav-toggle" class="ml:auto d:none d:block@<=sm font:24 font:bold" style="cursor:pointer;">&#9776;</label>
+
+        <!-- nav links: inline row on desktop; folds into a dropdown panel on mobile -->
+        <div class="nav-links ml:auto d:flex d:none@<=sm flex:column@<=sm align-items:center@<=sm abs@<=sm top:45@<=sm left:0@<=sm w:full@<=sm p:16@<=sm gap:12@<=sm bg:#090302EE@dark@<=sm bg:white@<=sm">
             {{ $currentPage := . }}
             {{ $active := "" }}
             {{ range .Site.Menus.main }}
