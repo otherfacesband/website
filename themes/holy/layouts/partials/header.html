@@ -1,5 +1,4 @@
-<!-- mobile dropdown toggle: CSS checkbox hack for the open/close state, a small script only
-     for closing it when you tap outside the panel (no clean CSS-only way to do that) -->
+<!-- mobile dropdown toggle: pure CSS checkbox hack, no JS needed -->
 <style>
     @media (max-width: 767px) {
         .nav-links {
@@ -15,25 +14,6 @@
         }
     }
 </style>
-<script>
-(function () {
-    var toggle = document.getElementById('nav-toggle');
-    var navLinks = document.querySelector('.nav-links');
-    if (!toggle || !navLinks) return;
-    function handleOutside(e) {
-        if (!toggle.checked) return;
-        if (navLinks.contains(e.target)) return;
-        // exclude the hamburger label itself -- otherwise opening the menu (which checks the
-        // box) immediately looks like an "outside" click on this same event and re-closes it
-        if (e.target.closest('label[for="nav-toggle"]')) return;
-        toggle.checked = false;
-    }
-    // touchstart because mobile Safari/Chrome don't reliably fire synthetic "click" events on
-    // plain non-interactive elements (like the page body) from a tap; click stays for desktop
-    document.addEventListener('touchstart', handleOutside);
-    document.addEventListener('click', handleOutside);
-})();
-</script>
 
 <nav class="w:full h:45 fixed bg:#090302EE@dark bg:white z:1000">
     <div class="
