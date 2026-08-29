@@ -1,0 +1,153 @@
+<!--
+    Scroll/swipe-driven frame sequence for the home page background.
+    Frames live in static/frames/, named frame_001.webp, frame_002.webp, ...
+    (see: ffmpeg -vf "fps=N,scale=W:-1" -c:v libwebp -q:v 80 frame_%03d.webp).
+    Until frames exist, this silently does nothing and the CSS background shows through.
+-->
+<canvas id="frame-scrubber" class="fixed left:0 top:0 w:full h:full z:-1"></canvas>
+<script>
+(function () {
+    var canvas = document.getElementById('frame-scrubber');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+
+    var FRAME_BASE = '/frames/frame_';
+    var MAX_PROBE = 500; // hard ceiling so a naming mistake can't probe forever
+
+    var frames = [];
+    var ready = false;    // true once the full frame count is known -- see loadNext()
+    var targetIndex = 0;  // where input wants us; unbounded, updated instantly
+    var displayIndex = 0; // where we're actually drawing from; eases toward targetIndex every frame
+    function pad(n) {
+        return String(n).padStart(3, '0');
+    }
+
+    function smoothstep(t) {
+        return t * t * (3 - 2 * t);
+    }
+
+    // maps an unbounded index onto [0, frames.length-1] as a continuous ping-pong/boomerang
+    // bounce: plays forward to the last frame, reverses to the first, reverses again, forever.
+    // smoothstep is applied to the bounce's phase (not the frame value itself), so motion eases
+    // in/out at both endpoints -- it takes more scrolling to reach and leave frame 1 and the last
+    // frame, same as decelerating into a wall and accelerating back off it.
+    // works on fractional input too -- the reflection is continuous, so crossfading through
+    // the turnaround point (see draw()) needs no special-casing.
+    function pingPongPosition(i) {
+        var n = frames.length;
+        if (n <= 1) return 0;
+        var period = 2 * (n - 1);
+        var m = ((i % period) + period) % period; // proper (non-negative) modulo
+        var linear = m <= (n - 1) ? m : period - m; // 0..(n-1)..0, linear
+        return smoothstep(linear / (n - 1)) * (n - 1);
+    }
+
+    function drawFrame(img, alpha) {
+        var scale = Math.max(canvas.width / img.width, canvas.height / img.height);
+        var w = img.width * scale;
+        var h = img.height * scale;
+        var x = (canvas.width - w) / 2;
+        var y = (canvas.height - h) / 2;
+        ctx.globalAlpha = alpha;
+        ctx.drawImage(img, x, y, w, h);
+        ctx.globalAlpha = 1;
+    }
+
+    // crossfades between the two nearest real frames based on fractional position, so a sparse
+    // frame set still reads as smooth, continuous motion instead of a slideshow
+    var lastLoggedFrame = null;
+    function draw() {
+        if (!frames.length) return;
+        var pos = pingPongPosition(displayIndex);
+        var i0 = Math.floor(pos);
+        var i1 = Math.min(i0 + 1, frames.length - 1);
+        var t = pos - i0;
+        var imgA = frames[i0];
+        if (!imgA) return;
+
+        // debug: log the displayed frame number (1-indexed, matching filenames) only when it
+        // changes, along with virtualIndex/pos, to spot exactly when/where a skip happens
+        var shownFrame = t < 0.5 ? i0 + 1 : i1 + 1;
+        if (shownFrame !== lastLoggedFrame) {
+            // console.log('frame', shownFrame, '| targetIndex', targetIndex.toFixed(2), '| displayIndex', displayIndex.toFixed(2), '| pos', pos.toFixed(2));
+            lastLoggedFrame = shownFrame;
+        }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawFrame(imgA, 1);
+        var imgB = frames[i1];
+        if (t > 0 && imgB && imgB !== imgA) drawFrame(imgB, t);
+    }
+
+    function resizeCanvas() {
+        // match the canvas's drawing buffer to physical pixels, not CSS pixels --
+        // otherwise Retina displays upscale a lower-res buffer and everything looks soft
+        var dpr = window.devicePixelRatio || 1;
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+        draw();
+    }
+
+    // load frames one at a time so we stop cleanly at the first 404 (= frame count).
+    // interaction stays disabled (see nudge()) until this finishes -- frames.length changing
+    // mid-scrub would shift the ping-pong period underneath the user and read as a random jump.
+    function loadNext(i) {
+        if (i > MAX_PROBE) {
+            ready = true;
+            return;
+        }
+        var img = new Image();
+        img.onload = function () {
+            frames[i - 1] = img;
+            if (i === 1) resizeCanvas();
+            loadNext(i + 1);
+        };
+        img.onerror = function () {
+            // stop probing; frames[0..i-2] are already loaded and usable, count is now final
+            ready = true;
+        };
+        img.src = FRAME_BASE + pad(i) + '.webp';
+    }
+    loadNext(1);
+
+    // continuously eases displayIndex toward targetIndex, decoupling the visible motion from
+    // the bursty/inconsistent timing of wheel and touch events -- this is what actually removes
+    // the skipping, independent of how sparse the underlying frame set is
+    var EASE = 0.12; // 0-1; lower = more glide/inertia, higher = snappier and more direct
+    function tick() {
+        displayIndex += (targetIndex - displayIndex) * EASE;
+        draw();
+        requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    // wheel/touch delta -> target position; PIXELS_PER_FRAME is the one knob for scrub speed
+    var PIXELS_PER_FRAME = 50; // px of input delta per frame advanced; raise to slow scrubbing down
+
+    function nudge(delta) {
+        if (!ready) return;
+        targetIndex += delta / PIXELS_PER_FRAME;
+    }
+
+    // preventDefault on both so the page never actually scrolls -- it stays a static landing card
+    window.addEventListener('wheel', function (e) {
+        if (!frames.length) return;
+        e.preventDefault();
+        nudge(e.deltaY);
+    }, { passive: false });
+
+    var touchStartY = null;
+    window.addEventListener('touchstart', function (e) {
+        touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    window.addEventListener('touchmove', function (e) {
+        if (touchStartY === null || !frames.length) return;
+        e.preventDefault();
+        var y = e.touches[0].clientY;
+        nudge(touchStartY - y);
+        touchStartY = y;
+    }, { passive: false });
+
+    window.addEventListener('resize', resizeCanvas);
+})();
+</script>

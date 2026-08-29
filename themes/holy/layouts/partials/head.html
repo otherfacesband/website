@@ -34,10 +34,18 @@
         gtag('config', 'G-3FHPWC19NH');
     </script>
 
-    <!-- default site font -->
+    <!-- site fonts: Labrada for headers/large display text, Newsreader for smaller body copy -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Labrada:wght@100..900&family=Parastoo:wght@400;700&display=swap" rel="stylesheet">
     <style>
 :root {
-    --font-sans: "Inter var", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    /* variable name stays --font-sans (not --font-serif) because Master CSS's "font:sans"
+       utility, used throughout this theme, is hardcoded to read this exact variable --
+       it's the site's default, applied to <body>, so headers and large text get it for free */
+    --font-sans: "Labrada", Georgia, Cambria, "Times New Roman", Times, serif;
+    /* applied explicitly to smaller/body-copy text (see prose.html, footer.html) */
+    --font-text: "Parastoo", Georgia, Cambria, "Times New Roman", Times, serif;
 }
     </style>
 

@@ -5,15 +5,16 @@ title = "Album"
 <img src="/albumcover.webp">
 <br> <br>
 
-### our first album
+### <b>our first album </b>
 On our self-titled debut LP, we took to the studio to reimagine a body of work built from close improvisation, experimentation, and live performance. Recorded at Honey Jar studio in Brooklyn, NY, the six-track album balances nature with analog grit, moving seamlessly between dust-lit ambient interludes to punchy percussion-driven madness. With <b>Other Faces</b>, we continue our push to redefine the barriers between sound and visuals.
 
-<div style="text-align: right;"> 
+<p style="text-align: right;">
 other faces will be available November 2026 <br>
 listen on bandcamp or your favorite streaming service.
-</div>
+</p>
+<br><br>
 
-#### Track List
+### <b>Track List </b>
 Intro <br>
 Field <br>
 Friction <br>

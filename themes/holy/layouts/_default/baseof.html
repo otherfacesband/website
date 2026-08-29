@@ -4,7 +4,9 @@
 
 <!-- home page gets its own background image; every other page stays plain -->
 {{ $isHome := or .IsHome (and .File (eq .File.BaseFileName "home")) }}
-<body class="{{ if $isHome }}bg:url('\white_tree.webp') bg:repeat-y bg:cover bg:center bg:scroll {{ end }}bg:#090302@dark font:fade-16@dark font:sans">
+<body class="{{ if $isHome }}bg:url('\white_tree.webp') bg:repeat-y bg:cover bg:center bg:scroll overflow:hidden {{ end }}bg:#090302@dark font:fade-16@dark font:sans">
+    <!-- scroll/swipe-driven frame sequence background (home page only; no-op until static/homeframes/ has frames) -->
+    {{ if $isHome }}{{ partial "frame-scrubber.html" . }}{{ end }}
     <!-- fixed nav bar -->
     {{ partial "header.html" . -}}
     <!-- full-height page wrapper: stretches the content card so the footer clamps to the true bottom of the page -->
