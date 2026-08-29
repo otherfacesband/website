@@ -1,9 +1,39 @@
-<!-- mobile dropdown toggle: pure CSS checkbox hack, no JS needed -->
+<!-- mobile dropdown toggle: CSS checkbox hack for the open/close state, a small script only
+     for closing it when you tap outside the panel (no clean CSS-only way to do that) -->
 <style>
-    .nav-toggle:checked ~ .nav-links {
-        display: flex !important;
+    @media (max-width: 767px) {
+        .nav-links {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 280ms ease, opacity 200ms ease;
+        }
+        .nav-toggle:checked ~ .nav-links {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
     }
 </style>
+<script>
+(function () {
+    var toggle = document.getElementById('nav-toggle');
+    var navLinks = document.querySelector('.nav-links');
+    if (!toggle || !navLinks) return;
+    function handleOutside(e) {
+        if (!toggle.checked) return;
+        if (navLinks.contains(e.target)) return;
+        // exclude the hamburger label itself -- otherwise opening the menu (which checks the
+        // box) immediately looks like an "outside" click on this same event and re-closes it
+        if (e.target.closest('label[for="nav-toggle"]')) return;
+        toggle.checked = false;
+    }
+    // touchstart because mobile Safari/Chrome don't reliably fire synthetic "click" events on
+    // plain non-interactive elements (like the page body) from a tap; click stays for desktop
+    document.addEventListener('touchstart', handleOutside);
+    document.addEventListener('click', handleOutside);
+})();
+</script>
 
 <nav class="w:full h:45 fixed bg:#090302EE@dark bg:white z:1000">
     <div class="
@@ -20,7 +50,7 @@
         <label for="nav-toggle" class="ml:auto d:none d:block@<=sm font:24 font:bold" style="cursor:pointer;">&#9776;</label>
 
         <!-- nav links: inline row on desktop; folds into a dropdown panel on mobile -->
-        <div class="nav-links ml:auto d:flex d:none@<=sm flex:column@<=sm align-items:center@<=sm abs@<=sm top:45@<=sm left:0@<=sm w:full@<=sm p:16@<=sm gap:12@<=sm bg:#090302EE@dark@<=sm bg:white@<=sm">
+        <div class="nav-links ml:auto d:flex flex:column@<=sm align-items:center@<=sm abs@<=sm top:45@<=sm left:0@<=sm w:full@<=sm p:16@<=sm gap:12@<=sm bg:#090302EE@dark@<=sm bg:white@<=sm">
             {{ $currentPage := . }}
             {{ $active := "" }}
             {{ range .Site.Menus.main }}
@@ -29,7 +59,7 @@
             {{ end }}
             <!-- nav links -->
             <a class="
-                font:#637C9E
+                font:#AB998C
                 font:semibold
                 font:20
                 font:fade

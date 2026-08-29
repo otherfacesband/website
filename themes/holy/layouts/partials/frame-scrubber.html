@@ -114,7 +114,25 @@
     // the bursty/inconsistent timing of wheel and touch events -- this is what actually removes
     // the skipping, independent of how sparse the underlying frame set is
     var EASE = 0.12; // 0-1; lower = more glide/inertia, higher = snappier and more direct
+
+    // momentum: once input goes idle, targetIndex keeps drifting by "velocity" each frame while
+    // velocity decays via FRICTION, instead of freezing the instant the user lets go -- combined
+    // with the EASE chase above this is what makes it glide to a stop rather than hard-stopping
+    var velocity = 0;
+    var lastInputTime = 0;
+    var IDLE_MS = 50;       // how long without input before momentum takes over
+    var FRICTION = .95;    // 0-1; higher = glides longer, lower = stops sooner
+    var MIN_VELOCITY = 0.001;
+
     function tick() {
+        if (performance.now() - lastInputTime > IDLE_MS) {
+            if (Math.abs(velocity) > MIN_VELOCITY) {
+                targetIndex += velocity;
+                velocity *= FRICTION;
+            } else {
+                velocity = 0;
+            }
+        }
         displayIndex += (targetIndex - displayIndex) * EASE;
         draw();
         requestAnimationFrame(tick);
@@ -122,11 +140,14 @@
     requestAnimationFrame(tick);
 
     // wheel/touch delta -> target position; PIXELS_PER_FRAME is the one knob for scrub speed
-    var PIXELS_PER_FRAME = 50; // px of input delta per frame advanced; raise to slow scrubbing down
+    var PIXELS_PER_FRAME = 45; // px of input delta per frame advanced; raise to slow scrubbing down
 
     function nudge(delta) {
         if (!ready) return;
-        targetIndex += delta / PIXELS_PER_FRAME;
+        var d = delta / PIXELS_PER_FRAME;
+        targetIndex += d;
+        velocity = d;
+        lastInputTime = performance.now();
     }
 
     // preventDefault on both so the page never actually scrolls -- it stays a static landing card

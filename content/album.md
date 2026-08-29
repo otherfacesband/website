@@ -6,11 +6,11 @@ title = "Album"
 <br> <br>
 
 ### <b>our first album </b>
-On our self-titled debut LP, we took to the studio to reimagine a body of work built from close improvisation, experimentation, and live performance. Recorded at Honey Jar studio in Brooklyn, NY, the six-track album balances nature with analog grit, moving seamlessly between dust-lit ambient interludes to punchy percussion-driven madness. With <b>Other Faces</b>, we continue our push to redefine the barriers between sound and visuals.
+On their self-titled debut LP, Other Faces took to the studio to reimagine a body of work built from close improvisation, experimentation, and live performance. Recorded at Honey Jar studio in Brooklyn, NY, the six-track album balances nature with analog grit, moving seamlessly between dust-lit ambient interludes to punchy percussion-driven madness. With <i>Other Faces</i>, the trio continues their push to redefine the barriers between sound and visuals.
 
 <p style="text-align: right;">
-other faces will be available November 2026 <br>
-listen on bandcamp or your favorite streaming service.
+<b>other faces will be available November 2026 <br>
+listen on <a href="https://otherfacesband.bandcamp.com/album/other-faces"><b><u>bandcamp</u></b></a> or your favorite streaming service. </b>
 </p>
 <br><br>
 
