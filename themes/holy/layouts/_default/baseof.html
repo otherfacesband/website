@@ -1,5 +1,11 @@
 <!DOCTYPE html>
-<html>
+<!-- class="dark" is baked in here at build time rather than added by JS at runtime (as
+     head-extra.html's theme script also does) -- Master CSS's dark-mode styles only apply to
+     classes present when its startup scan runs, and a rare third-party bug can prevent it from
+     picking up *later* DOM changes at all. Since this site always forces dark mode for every
+     visitor regardless of their OS preference, there's no reason it needs to be JS-driven, and
+     baking it in makes dark mode work even for visitors who hit that bug. -->
+<html class="dark">
 {{- partial "head.html" . -}}
 
 <!-- home page gets its own background image; every other page stays plain -->
