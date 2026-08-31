@@ -16,12 +16,18 @@
     <meta name="author" content="{{ site.Params.author.name }}" />
     {{ end }}
 
-    <!-- Master CSS: reset stylesheet + the runtime that turns utility classNames into actual CSS in the browser -->
-    <link href="https://unpkg.com/@master/normal.css" rel="stylesheet">
-    <script src="https://unpkg.com/@master/style@1.5.0"></script>
-    <script src="https://unpkg.com/@master/styles@1.13.0"></script>
-    <script src="https://unpkg.com/master-styles-group"></script>
-    <script src="https://unpkg.com/themes.js"></script>
+    <!-- Master CSS: reset stylesheet + the runtime that turns utility classNames into actual CSS
+         in the browser. Self-hosted (not loaded from unpkg.com) so the site's own styling can't
+         be broken by an ad-blocker/privacy extension blocking a third-party CDN domain -- a
+         same-origin request essentially never gets blocked that way. Pinned exact versions:
+         @master/style@1.5.0, @master/styles@1.13.0, master-styles-group@0.1.1, themes.js@0.0.10.
+         To update: re-download from the matching unpkg.com URL and overwrite the file in
+         static/vendor/. -->
+    <link href="/vendor/master-normal.css" rel="stylesheet">
+    <script src="/vendor/master-style.js"></script>
+    <script src="/vendor/master-styles.js"></script>
+    <script src="/vendor/master-styles-group.js"></script>
+    <script src="/vendor/themes.js"></script>
     <script>window.themes = window.themes || new window.Themes()</script>
 
     <!-- Google tag (gtag.js) -->
